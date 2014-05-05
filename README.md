@@ -1,287 +1,299 @@
-OSoDi (open source distribution)
-================================
-project by code-once team, Germany
-
-I dream about *one simple place to search for open source software* (as user) and
-libraries (as developer) and *getting it on disk easily* while knowing that builds are reproducable.
-This should be easier than driving your car.
-
-*I want you to help me turning this dream into reality*.
-
-Open Source software is scattered over many places such as sourceforge, github,
-bitbucket, and many more. They all server special purposes and do their job
-pretty well.
-But I want to see *more than just code on github*:
-* How I can support its development or its developers if I like the project
-* does it build and on what platforms
-* strengths / weaknesses ?
-* how many users ?
-* supported by which distributions ?
-* are there alternatives ?
-* can I cross compile it?
-* which languages its written in?
-* how long it'll take me to have it on disk (estimated download/build time)
-* how to get notified about important updates
-* are there reviewers?
-* bugs/ security issues?
-* which compilers is it known to work with?
-* how many lines of code?
-* the license(s)
-
-While many distributions really try hard to serve users, its getting harder and
-harder the more projects exist. Moreover they cannot get it right usually, because
-users have different focus: Be stable or bleeding edge. 
-
-Sometimes you want to be both: Bleeding edge for software editing, stable for
-your emails application.
-You already get it: The more ways to combine software, the more challenging
-the task to put this all into one software distributions.
-
-How to escape and succeed?
+YPM (YOUR PACKAGE MANAGER)
 ==========================
-Stop thinking in terms of "distributors", starting thinking in way software
-development happens: Developers know what they did, and they are interested in
-getting feedback from users especially when none of the distributions are shipping
-the latest features yet.
 
-The *faster such a feedback loop, the happier will users and developers be*.
+goals:
+* putting *YOU UNDER CONTROL*
+* each package is "responsible" on its own thus it documents what in needs to
+  be compiled & run.
+* implement solver which gets the job done reasonably well.
+* directly install from github / bitbucket if repositories ship recipes
+* introduce global package database for search and attaching information
+* cross platform
+* cross language
+* be as simple as driving a car
+* deterministic / reproducable
+* for git/mercurial dependencies allow "latest/HEAD", but force devs to also specify a
+  hash known to be working so that others can reproduce behavior.
+* allow YOU to choose for which use cases you prefer bleeding edge over stable
+  releases.
 
-However developers have no time/interest in supporting the overwhelming amount of
-distributions - from [http://brew.sh/](Homebrew- OSX) up to [](Cygwin - Linux for Windows).
-To get an idea about how many Linux distributions exist see
+How sweet will it smell?
+========================
+
+This shell example shows how it'll look like installing a python project called A,
+a Ruby project called B and so on:
+
+    # Note how packages get simply prefixed by language file extension
+    $ ypm i[nstall] py-A rb-B hs-C java-D js-E ml-F scala-G
+
+      ypm: You haven't setup a configuration file yet.
+      May I assume you want
+        * to use latest versions unless there are known bugs or security issues
+        * you trust the global package database
+      [Y]/n
+      .. thanks .. installing ..
+      downloads: 200 MB of source
+      downloads: 180 MB of prebuild binaries
+      estimated execution time: 40 min
+      ... build/download logs
+
+Sample shell session installing from github like repositories:
+
+    $ # assuming package has sane package description in its repository
+    $ ypm install github:user/package
+
+
+How to configure the solver?
+
+    $ export YPM=SOLVER_CONFIG=file:PROFILE=~/ypm-profile:PACKAGE_POOL=A:PACKAGE_POOL=B
+
+    where A,B can be the open source package database run by YPM project.
+
+What does the solver do exactly? If a package says "I depend on package B",
+it finds that package B, and if there are multiple versions it chooses the best
+one. "best" is configurable. It could be "bleeding edge" or "stable" depending
+on what YOU prefer.
+
+PACKAGE DATABASE
+================
+While you'll be able to get recipes directly from github repositories
+it'll still make sense to have a database containing recipes of opensource
+software so that you can search AND ATTACH INFORMATION.
+
+PACKAGE RECIPES
+===============
+Package's constraints depend on context. Examples:
+* java on java complier
+* Ruby on platform (jruby, rvm, ruby) and operating system
+* Ocaml: binary or bytecode
+* ...
+
+Thus recipes will abstract over those common choices and turn into "build
+descriptions" once they get instantiated with proper data (such as compiler
+version).
+While doing this don't try to be perfect - this would be too CPU costly.
+Instead try to maximize the value to the user. Thus be good enough to suport
+flavour/targets such as:
+* run test suite y/n
+* build with / without documentation y/n
+* ...
+
+More details at the end of this document
+
+PACKAGE DISAMBIGUATION
+======================
+Hot topic. All of you know that there are many forks on github of your beloved package FOO.
+Thus introduce "meta information" which knowns about the 'official' fork. But
+allow YOU to override this default choice.
+
+Also allow "distributors" to tell which packages they support - so that you can
+make a choice faster. Thus you'll be allowed to say "if in doubt use the
+version Ubuntu uses if known".
+
+LANGUAGES WHICH WILL BE SUPPORTED
+=================================
+* C
+* C++http://ypm.it-o-t-f.com/logo.svg
+* lua
+* Ruby
+* PHP
+* Haskell
+* Perl
+* Python
+* FreePascal
+* NodeJS
+* Java
+* Scala
+* TCL
+* Erlang
+* Rust
+* Ocaml
+* D
+* Fortran
+* Elisp (Emacs extensions)
+* Lisp
+* VimL (Vim plugins)
+(List is incomplete)
+
+PLATFORMS WHICH WILL BE SUPPROTED
+=================================
+* linux
+* OSX
+* Darwin
+* cygwin (thus Windows)
+
+ROADMAP (STEP TO SUCCESS)
+=========================
+0) Create a nice logo. Suggestions ?
+
+1) For each language which could be supported (see above) create its own fund
+raising page. Then start supporting the languages which get funded first.
+
+2) describe the package recipes & instantiation, how dependencies could be
+resolved and implement a prototype targeting [http://brew.sh/](Homebrew- OSX)
+and [http://nixos.org](Nix packaging system) which runs on linux, darwin,
+cygwin etc.
+
+3) abstract over nix store location, so that binaries can be installed into
+directories
+
+4) Start YBF (your build farm) project
+
+Who am I?
+=========
+I'm Marc Weber living in Germany (black forest).
+
+I've been programming for 15 years using various languages. I've been always
+annoyed by having to learn yet another packaging tool which was special in way
+X just because I wanted to give a tool written in language Y a try.
+
+I don't care about "dress codes" - I want to get jobs done. I only believe in
+"beauty/theory" as long as it serves a purpose.
+
+I want to write the minimal packaging system / source/ binary distribution
+available.
+
+Everybody can join and get build recipes from - including big well
+known distributions such as Ubuntu, Suse, Debian, Nixos, Gentoo (any other
+listed or not listed on
 [http://en.wikipedia.org/wiki/Linux_distribution](Wikipedia's list).
 
-It just happens that people often keep running what they are used to.
-Thus to serve developers and users you have to serve distributions,
-thus *provide the information they need to build a software package from
-source*. And this is what this project is about:
 
-1) The backbone: A pool of known packages recipes
-=================================================
-A package recipe is a recipe which can be instantiated to a package
-descriptions. Such package descriptions has build/run/test constraints to be
-satisfied.
+CONTACT
+=======
+[mailto:marco-oweber@gmx.de](mail) or irc: irc.freenode.net, nick MarcWeber.
 
-Package recipes will contain at least:
- * input params required to instantiate them (see below)
- * submission date (This is important to reproduce a setup from "last year")
- * package name
- * a package versions along with information how to to find out which version is newer/older
- * package description
- * where to get source (eg github)
- * license alternatives - maybe even per file
- * operating systems it can be used on
- * compilers it can be used with
- * special tags to track forks introducing special features.
- * cross compilation options
- * flags compilation/install options (eg with-feature-XY)
- * dependencies which depend on the flags and goal (development, testing, running, ...)
- * is it binary/source distributable in regions (patents?)
- * tags (for categorisation)
- * is it ok to install multiple versions (Examples: Gimp: yes; dbus systemwide: no)
- * a list of files which are known to differ in builds eg because they contain the compilation timestamp
- * a list of binaries (so that you can search for them)
- ...
+When I'm making process, what will I be working on as well?
+===========================================================
 
-Additionally for each "package" name (which may have many released versions and
-github repositories/forks attached) provide a summary such as
-  * "recommended" version
-  * differences (forks)
-  * .. whatever makes sense also
+* YBF (your build farm) Start a buildfarm for packages recipes. Because there are more packages
+  then I'll have resources there will be "subscription options" for less
+  commonly used software. This will ensure that resources are spend in an
+  optimal way.
 
-Like Haskell allow the creation of "platforms". A platform is a set of commonly used
-core packages which can be referenced. This could be "rails-core-3.0" which itself
-references many small packages. Rails is popular web framework for Ruby.
+  Example: If you want fork of firefox you'll not pay for libjpeg, you'll only
+  pay for building that fork - the more people join subscription - the less
+  you'll pay. Yes, I do believe in the perfect market serving us all in the
+  best way.
 
-Ocaml for instance allows compiling the same sources using either ocamlopt or
-ocamlc. Ruby packages can either be run by ruby, rubinius or jruby.
-Thus package recipes must be like functions once fed with input they turn into
-static package descriptions.
+* Start a compiler which allows me to "code things once" - however this will
+  take quite a while
 
-2) The solver
-=============
-The solver will have the task to find matching dependencies to build targets.
+* provide smart hosting which does not only handle the server code but also
+  state in a simple wayhttp://ypm.it-o-t-f.com/logo.svg
 
-Because there are so many ways to combine packages there will be different
-strategies satisfying your needs such as
-  * strategy 1: be bleeding edge
-  * strategy 2: versions recommended by maintainers
+FAQ
+===
+  Q: Will I be able to ensure everything found on github, sourceforge, bitbucket,
+     any other location will install?
+  A: No. In 2011 github alone was said to have more than 2.000.000 repositories.
+    I will support the code and infrastructure so that maintainers can join.
 
-In all cases fallback to older/stable releases unless there are known
-bugs/vulnerabilities.
+  Q: Will I be able to ensure there are no bugs / security issues?
+  A: No. But the database will allow to attach and query known issues.
+     Putting you under control means also letting you choose what you consider to
+     be a serious issue or a small problem you can live with.
 
-SAT solvers will be an option, but I fear they'll be too slow. SAT solvers
-have tho property that if there is a solution they'll find it. But due to the
-endless options its likely to annoy the user due to taking a lot of RAM and
-burning CPU. While Eclipse has it for this project evaluation speed will be
-important more important.
+  Q: Which language will be used to implement the first working prototype
+  A: Haskell - unless you have strong reasons to use a different language
 
-3) binaries - THE APP STORE
-===========================
-Turning package recipes into package descriptions allows to build/install
-packages easily. The follow backends will be supported:
-* [http://brew.sh/](Homebrew)
-* [http://nixos.org](Nix package manager)
-* unpack & build in your "home" dir for developing/ auto tagging and similar
-* Any other famous linux distro if they want support such as Debian, Ubuntu, ..
-  It will be trivial to automate package generation.
+  Q: Why not use "gem" "pip" (any other existing packaging solution
+  A: They are not cross language. Eg you still have to install mysql C library in
+     order to build ruby's mysql library.
 
-Some of strong features of Nix:
-* parallel building of dependencies distributed on multiple build machines. See Hydra
-* atomic upgrades
-* allow multiple versions of the same package installed
-* multiple revisions
-* cygwin/linux/darwin support
-* its made up of modules separating build recipes from the build.
-* one click installs
-* garbage collection of packages no longer in use
+  Q: Will you serve end users or developers?
+  A: Both. Of course I'll take care to allow generating "debuggable" binaries
+    as well as generating tags, installing source along the binaries, allow to
+    run test suites and much more.
 
-Note that Nix is strong enough to create its own distribution, but can be used
-as package management by users, too. 
+  Q: How long will it take ?
+  A: I guess you understand that there is a lot to consider. Thus it'll be very
+    hard predict when all features will be implemented. I want 10 languages to be
+    supported within 1 year.
 
-Why not just use Nix? The frontend generating the recipes has been implemented
-3 times by now: Nix (the language), NiJS (js implementation), Guix (gnu
-operating system using nix but replacing the Nix language by Guile).
-Thus even though Nix gets its job done perfectly it does make sense to
-think about how to collaborate.
+  Q: Which languages will be supported first?
+  A: Those who get most funding / whose community support is best.
 
-Of course building packages does require resources (cpu, disk, network) thus
-tracking resources required to build a package is important. Tracking the
-resources will be very important for companies who want to setup their own
-servers. Telling the system which packages should be build first or which
-should be deleted garbage collected will be configurable.
+  Q: If I spend money, will I get listed?
+  A: Of course! I'll create a listing which will work like ads: The more you
+    spend, the more likely your logo & homepage link will be shown. Thus if person
+    A spend $2 and person B spends $8 B will be shown 4 times as often.
+    This much fairer than introducing ordering.
 
-4) integrating with other services
-==================================
-* Allow attaching information to packages such as vulnerabilities, package
-  versions, distro specific patches and more.
-  Such "attachments" may be signed and associated with accounts so that it'll e
-  you deciding to trust or not to trust
+  Q: Which license will your code be written under?
+  A: LGPLv2
 
-* github / bitbucket and similar => continuous integration
+How can I help?
+==============
+* Spend money on this fundraiser.
+* Tell me which packages you want to be supported first serving
+  as test case
 
-Which programming languages will be supported?
-==============================================
-OSoDi will be cross language/ cross platform.
-This will allow you to install a Ruby/... library along with MySQL headers
-without having to use "sudo" on your own.
-Some implementations details will depend on the backend. I want to provide an
-alternative installer for the following languages:
-
-* RubyForge,gem,bundler (Ruby)
-* cpan (Perl)
-* pip and easyinstall (Python)
-* ivy & maven (Java)
-* simple build tool (Scala)
-* pear (PHP)
-* vim-pi, Vundle, VAM, NeoVundle, ... (VimL)
-* Cabal (Haskell)
-* Opam (Ocaml)
-* el-get & elpa (Emacs)
-* luarocks & luadist (lua)
-* haxelib (Haxe)
-* reltool (erlang)
-* rust
-* ? (C/C++)
-* ? fortran
-* ... (I'm sure I've been missing some important languages and tools)
-
-For example I'm not aware of any C/C++ package manager which can resolve dependencies on
-its own.
-
-I know that I'll be unable to support many 100.000 packages on my own.
-I will need support of package maintainers, no doubt.
-
-How will languages be supported? Some packaging systems such as Haskell's Cabal
-already have strong dependency information. It will be easy to import .cabal
-files. For languages which lack such detailed information additional databases
-will be created adding the missing information. Eg VAM has been doing this for
-Vim plugins, same about el-get (package manager for Emacs).
-
-Example: How will it look like?
-===============================
-
-      osodi -c ~/.config/solver-hints install package-1 package-2
-
-and solver-hints contains many rules disambiguating solutions, eg
-telling it to prefer ocamlopt, which java version to use as default and the
-like
-
-My background
-=============
-I've been programming for about 15 years (Pascal, Delphi, some .net, JS, PHP,
-Ruby, Python, Some C/C++, Haskell, Nix, VimL, Ocaml, Java, Scala, Haxe, ..) and
-very often managing dependencies took more time than I wished it should.
-
-I've been contributing to nixos.org since 2007.
-
-Steps to success (roadmap)
-==========================
-0) Think about which license exactly to use. Any of these can be used:
-    [https://www.bountysource.com/faq#what-types-of-projects-are-allowed-on-bountysource](open source licenses)
-1) implement specifications for package instantiation & website
-2) implement solver
-3) make sure the languages can use the solver
-3) integrate with Nix
-4) integrate with Homebrew (unless Nix works reasonably well on OSX)
-5) integrate bountysource, github & similar websites
-6) Implement basic support for languages you voted for most
-
-Implementing "basic support" means:
-
-* Import existing package descriptions into the database.
-  If package descriptions are strong (Hackage/Haskell) case this will be
-  possible
-
-* Otherwise provide samples how to add new configuration files which will
-  make it possible to build/install packages using OSoDi
-
-Then
-* For each language implement alternative packaging solution and libraries so
-  that the packaging solution can be used from within that language.
-  This will be a lot of work thus I'll create new fundraisers for each language
-  to understand which language I should implement first.
-
-* Implement binary & source package creation/distribution for OSX, linux, cygwin based
-  on Nix or alternatives (such as Homebrew)
-
-* A lot more could be implemented on top of this data base such as "code search
-  engines" and so on.
-
-* Advertise the solution on common open source websites such as sourceforge so
-  that members of the open source community will join.
-
-How can you help?
-=================
-Either by donating money (bountysource) or by helping implementing the features.
-
-If you want to help just send me a [mailto:marco-oweber@gmx.de](mail) or
-contact me on irc.freenode.net, nick MarcWeber.
-
-By starting your own "build farm" reproducing builds. The end goal should be
-having an open source stack which yields the same output if you feed it with
-the same input.
+WATCHING THIS PROJECT
+======================
+* Send me a mail [mailto:marco-oweber@gmx.de](mail)
 
 principles I believe in
 =======================
-* KISS
-* do it once and do it right
+* KISS: keep it (as) stupid simple (as possible)
+* code once & do it once (and right)
 * use functional style if appropriate (no hidden state)
 * Everybody should do what he can do best
-* The perfect market being the best tool to serve everybody all. Support markets by
-  providing the information it needs.
-* reproducibility matters for servers and end users.
+* The perfect market being the best tool to serve everybody. Support markets by
+  providing the information they need.
+* reproducibility matters for servers & end users.
 * Think twice when forcing new habits on users
-* I want to support specialization in open source by setting up an infrastructure
-  which makes it more likely for developer to keep working on the projects they
-  already know
-
-CREDITS
-=======
-Of course most ideas are not new. Thus credits to everybody who is writing open
-source or is working on/for any of the projects I mentioned (and those I forgot)
+* specialization matters. Nobody today can do everything.
 
 
-link with:
-http://stackoverflow.com/questions/7266097/are-there-any-efforts-to-create-a-package-manager-for-c
+DETAILS: PACKAGE RECIPES
+========================
 
+Package recipes will be written in its own simple language and look like
+functions. Some arguments can be inferred by the solver, others will have to be
+set by the user - such as build package foo with option bar.
+
+A package recipe once instantiated can return different targets such as
+binaries, documentation, tagged source and whatnot.
+
+Example compiling PHP:
+
+    # properties:
+    name: 
+    version: 
+    source: {url = .. , hash = ..}
+    license:
+
+    # for search:
+    provides-binaries: php
+
+    # the function arguments, ! means must be passed
+    # auto means can be inferred by solver
+    {
+      c_compiler,
+      cross_compilation_options,
+
+      auto supportZlib default true,
+      auto supportSqlite default true,
+
+      if supportZlib auto zlib
+      if supportSqlite auto sqlite
+    }
+
+    # some code describing the build (eg shell scripts)
+
+Getting this right alone will take 2 weeks or more.
+
+DETAILS: PACKAGE DATABASE
+=========================
+
+Allow third parties to attach information:
+* patches
+* review status (could prevent OpenSSL heartbleat like bugs because companies know where to spend more resources on)
+* issues
+* alternatives
+* list of pro/cons
+* ....
+
+Items such as "review status" or "issues" can be signed - thus its you choosing
+whom to trust.

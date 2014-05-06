@@ -136,6 +136,7 @@ PLATFORMS WHICH WILL BE SUPPROTED
 * OSX
 * Darwin
 * cygwin (thus Windows)
+* FreeBSD/OpenBSD
 
 HOW TO FOLLOW?
 ==============

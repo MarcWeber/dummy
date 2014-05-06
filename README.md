@@ -15,8 +15,8 @@ goals:
 * deterministic & reproducable & secure, thus chrooted builds if supported by OS
 * for git/mercurial dependencies allow "latest/HEAD", but force devs to also specify a
   hash known to be working so that others can reproduce behavior.
-* allow YOU to choose for which use cases you prefer bleeding edge over stable
-  releases, whether to use which forks and similar
+* allow YOU to choose for which use cases you prefer bleeding edge/stable/least
+  compilation effort, whether to use which forks and similar
 * allow impure substitutes - eg install Ruby gem mysql but use the system's
   mysql library - if its not there yet tell the user to install it before any
   build starts

@@ -139,7 +139,7 @@ PLATFORMS WHICH WILL BE SUPPROTED
 
 HOW TO FOLLOW?
 ==============
-See [ypm.it-o-t-f.com](ypm homepage) (More to to come)
+See [ypm homepage](http://ypm.it-o-t-f.com) (More to to come)
 
 ROADMAP (STEP TO SUCCESS)
 =========================
@@ -149,8 +149,8 @@ ROADMAP (STEP TO SUCCESS)
 raising page. Then start supporting the languages which get funded first.
 
 2) describe the package recipes & instantiation, how dependencies could be
-resolved and implement a prototype targeting [http://brew.sh/](Homebrew- OSX)
-and [http://nixos.org](Nix packaging system) which runs on linux, darwin,
+resolved and implement a prototype targeting [Homebrew- OSX](http://brew.sh/)
+and [Nix packaging system](http://nixos.org) which runs on linux, darwin,
 cygwin etc.
 
 3) abstract over nix store location, so that binaries can be installed into
@@ -172,7 +172,7 @@ I don't care about "dress codes" - I want to get jobs done. I only believe in
 Everybody can join and get build recipes from - including big well
 known distributions such as Ubuntu, Suse, Debian, Nixos, Gentoo (any other
 listed or not listed on
-[http://en.wikipedia.org/wiki/Linux_distribution](Wikipedia's list).
+[Wikipedia's list](http://en.wikipedia.org/wiki/Linux_distribution).
 
 
 Why should you support this project/ which problems do get fixed compared to X?
@@ -201,7 +201,7 @@ Why should you support this project/ which problems do get fixed compared to X?
 
 CONTACT
 =======
-[mailto:marco-oweber@gmx.de](mail) or irc: irc.freenode.net, nick MarcWeber.
+[mail](mailto:marco-oweber@gmx.de) or irc: irc.freenode.net, nick MarcWeber.
 
 When I'm making process, what will I be working on as well?
 ===========================================================
@@ -269,9 +269,10 @@ How can I help?
 * Tell me which packages you want to be supported first serving
   as test case
 
-WATCHING THIS PROJECT
-======================
-* Send me a mail [mailto:marco-oweber@gmx.de](mail)
+WATCH THIS PROJECT
+==================
+See mailinglist or to announcements at [ypm homepage](http://ypm.it-o-t-f.com)
+
 
 principles I believe in
 =======================

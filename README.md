@@ -1,3 +1,5 @@
+![YPM](http://ypm.it-o-t-f.com/logo.svg "YPM Logo")
+
 YPM (YOUR PACKAGE MANAGER)
 ==========================
 

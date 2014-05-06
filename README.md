@@ -2,20 +2,22 @@ YPM (YOUR PACKAGE MANAGER)
 ==========================
 
 goals:
+* cross platform & cross language
 * putting *YOU UNDER CONTROL*
 * each package is "responsible" on its own thus it documents what in needs to
   be compiled & run.
 * implement solver which gets the job done reasonably well.
 * directly install from github / bitbucket if repositories ship recipes
 * introduce global package database for search and attaching information
-* cross platform
-* cross language
 * be as simple as driving a car
-* deterministic / reproducable
+* deterministic & reproducable & secure, thus chrooted builds if supported by OS
 * for git/mercurial dependencies allow "latest/HEAD", but force devs to also specify a
   hash known to be working so that others can reproduce behavior.
 * allow YOU to choose for which use cases you prefer bleeding edge over stable
-  releases.
+  releases, whether to use which forks and similar
+* allow impure substitutes - eg install Ruby gem mysql but use the system's
+  mysql library - if its not there yet tell the user to install it before any
+  build starts
 
 How sweet will it smell?
 ========================
@@ -37,10 +39,18 @@ a Ruby project called B and so on:
       estimated execution time: 40 min
       ... build/download logs
 
+
 Sample shell session installing from github like repositories:
 
     $ # assuming package has sane package description in its repository
     $ ypm install github:user/package
+
+
+Starting to hack on an arbitrary project:
+
+    $ # this will checkout sources, provide utilities, whatever you need to get
+    $ # started hacking on a project:
+    $ ypm hack-on "package-foo"
 
 
 How to configure the solver?
@@ -51,7 +61,8 @@ How to configure the solver?
 
 What does the solver do exactly? If a package says "I depend on package B",
 it finds that package B, and if there are multiple versions it chooses the best
-one. "best" is configurable. It could be "bleeding edge" or "stable" depending
+one. The meaning of "best" is your choice. It could be "bleeding edge" or
+"stable" or you could be forcing 'recipe found at github/name/repo' depending
 on what YOU prefer.
 
 PACKAGE DATABASE
@@ -122,6 +133,10 @@ PLATFORMS WHICH WILL BE SUPPROTED
 * Darwin
 * cygwin (thus Windows)
 
+HOW TO FOLLOW?
+==============
+See [ypm.it-o-t-f.com](ypm homepage) (More to to come)
+
 ROADMAP (STEP TO SUCCESS)
 =========================
 0) Create a nice logo. Suggestions ?
@@ -150,14 +165,35 @@ X just because I wanted to give a tool written in language Y a try.
 I don't care about "dress codes" - I want to get jobs done. I only believe in
 "beauty/theory" as long as it serves a purpose.
 
-I want to write the minimal packaging system / source/ binary distribution
-available.
-
 Everybody can join and get build recipes from - including big well
 known distributions such as Ubuntu, Suse, Debian, Nixos, Gentoo (any other
 listed or not listed on
 [http://en.wikipedia.org/wiki/Linux_distribution](Wikipedia's list).
 
+
+Why should you support this project/ which problems do get fixed compared to X?
+===============================================================================
+
+* accelerating open source software development. It'll be easy for users & testers
+  to try new software and versions. Thus the feedback loop will become faster.
+  Often users don't know how to program, but they still want to help by testing.
+
+* managing the incredible amount of languages, packages, versions increasing
+  every single day:
+  The more packages exist the less sense does it make to download all
+  package descriptions to your disk such as common linux distributions do it.
+  Be lean, slick, simple: Only get on disk what you use, use the YPM database
+  and google to find software you're interested in.
+
+* developers will get started more quickly improving software because setting
+  up the environment required to build a project will be trivial.
+  Right now often you have to install software headers, pollute your system with
+  unstable versions and keep track of those changes. YPM will provide a simple command
+  ypm hack-on "package-foo" which will do everything you need to get started.
+
+* By reducing package management to its minimal set of required features
+  (package recipes, solvers, workers compiling binaries) distributors and
+  developers will have least chance to get distracted.
 
 CONTACT
 =======

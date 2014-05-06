@@ -261,14 +261,20 @@ FAQ
     A spend $2 and person B spends $8 B will be shown 4 times as often.
     This much fairer than introducing ordering.
 
-  Q: Which license will your code be written under?
+  Q: license of the code?
   A: LGPLv2
 
+  Q: What will happen if maintainers don't support YPM
+  A: Then I or YPM contributors will write scripts turning release notes into
+    recipes. Thus if there is intereset such projects will be supported as well.
+
 How can I help?
-==============
-* Spend money on this fundraiser.
-* Tell me which packages you want to be supported first serving
-  as test case
+===============
+* Support the fundraiser. Its ok to spend not too much right now, but continue
+  supporting the project later if you're satisfied by its progress.
+
+* Tell me which packages/ use cases you want to be supported first serving as
+  test case.
 
 WATCH THIS PROJECT
 ==================

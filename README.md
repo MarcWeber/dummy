@@ -18,6 +18,8 @@ goals:
 * allow impure substitutes - eg install Ruby gem mysql but use the system's
   mysql library - if its not there yet tell the user to install it before any
   build starts
+* allow version lock files similar to what Ruby's bundler project provides:
+  A file storing the exact dependencies so that they can be reproduced.
 
 How sweet will it smell?
 ========================
@@ -104,7 +106,7 @@ version Ubuntu uses if known".
 LANGUAGES WHICH WILL BE SUPPORTED
 =================================
 * C
-* C++http://ypm.it-o-t-f.com/logo.svg
+* C++
 * lua
 * Ruby
 * PHP
@@ -216,7 +218,7 @@ When I'm making process, what will I be working on as well?
   take quite a while
 
 * provide smart hosting which does not only handle the server code but also
-  state in a simple wayhttp://ypm.it-o-t-f.com/logo.svg
+  state in a simple way
 
 FAQ
 ===

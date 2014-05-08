@@ -2,26 +2,27 @@
 
 YPM (YOUR PACKAGE MANAGER)
 ==========================
+unique goals:
+* Each package is "responsible" on its own: It documents what in needs to
+  be compiled & run
+* Cross Platform & Cross Language
+* Putting *YOU UNDER CONTROL*
+* Implement solver knowing how to find dependencies
+* Install from github / bitbucket if repositories ships a recipe,
+  provide recipes in global open source database otherwise
 
-goals:
-* cross platform & cross language
-* putting *YOU UNDER CONTROL*
-* each package is "responsible" on its own thus it documents what in needs to
-  be compiled & run.
-* implement solver which gets the job done reasonably well.
-* directly install from github / bitbucket if repositories ship recipes
-* introduce global package database for search and attaching information
+more goals:
 * be as simple as driving a car
-* deterministic & reproducable & secure, thus chrooted builds if supported by OS
-* for git/mercurial dependencies allow "latest/HEAD", but force devs to also specify a
-  hash known to be working so that others can reproduce behavior.
-* allow YOU to choose for which use cases you prefer bleeding edge/stable/least
-  compilation effort, whether to use which forks and similar
+* deterministic & reproducible & secure, thus chrooted builds if supported by OS
+* allow YOU to choose optimization: download size, CPU utilization while installing,
+  be bleeding edge or prefer stable release
 * allow impure substitutes - eg install Ruby gem mysql but use the system's
   mysql library - if its not there yet tell the user to install it before any
   build starts
 * allow version lock files similar to what Ruby's bundler project provides:
   A file storing the exact dependencies so that they can be reproduced.
+* for git/mercurial dependencies allow "latest/HEAD", but force devs to also specify a
+  hash known to be working so that others can reproduce behavior.
 
 How sweet will it smell?
 ========================
@@ -66,34 +67,28 @@ How to configure the solver?
 What does the solver do exactly? If a package says "I depend on package B",
 it finds that package B, and if there are multiple versions it chooses the best
 one. The meaning of "best" is your choice. It could be "bleeding edge" or
-"stable" or you could be forcing 'recipe found at github/name/repo' depending
-on what YOU prefer.
-
-PACKAGE DATABASE
-================
-While you'll be able to get recipes directly from github repositories
-it'll still make sense to have a database containing recipes of opensource
-software so that you can search AND ATTACH INFORMATION.
+"stable" or you could be forcing 'recipe found at github/name/repo' or 
+use what is already on disk and matches the constraints.
 
 PACKAGE RECIPES
 ===============
-Package's constraints depend on context. Examples:
+Package's prerequisites depend on context. Examples:
 * java on java complier
 * Ruby on platform (jruby, rvm, ruby) and operating system
 * Ocaml: binary or bytecode
 * ...
 
 Thus recipes will abstract over those common choices and turn into "build
-descriptions" once they get instantiated with proper data (such as compiler
+descriptions" once they get instantiated with proper input (such as compiler
 version).
 While doing this don't try to be perfect - this would be too CPU costly.
-Instead try to maximize the value to the user. Thus be good enough to suport
+Instead try to maximize the value to the user. Thus be good enough to support
 flavour/targets such as:
 * run test suite y/n
 * build with / without documentation y/n
 * ...
 
-More details at the end of this document
+More details at the end of this document.
 
 PACKAGE DISAMBIGUATION
 ======================
@@ -133,8 +128,7 @@ LANGUAGES WHICH WILL BE SUPPORTED
 PLATFORMS WHICH WILL BE SUPPROTED
 =================================
 * linux
-* OSX
-* Darwin
+* OSX/Darwin
 * cygwin (thus Windows)
 * FreeBSD/OpenBSD
 
@@ -144,12 +138,24 @@ See [ypm homepage](http://ypm.it-o-t-f.com) (More to to come)
 
 ROADMAP (STEP TO SUCCESS)
 =========================
-0) Create a nice logo. Suggestions ?
+reaching $20000:
 
-1) For each language which could be supported (see above) create its own fund
-raising page. Then start supporting the languages which get funded first.
+Start the project by creating fund raisers for each languages.
+When a fund raiser gets started this means I already have determined what needs
+to be done so that I can judge the effort.
 
-2) describe the package recipes & instantiation, how dependencies could be
+For each language which could be supported (see above) create its own fund
+  raising page. Doing this already means a lot of work - eg identifying all
+  problems.
+
+1) Carefully create a list of use cases.
+
+2) Carefully design the recipes / solver / software to meet the use cases.
+
+
+4) implement
+
+4) describe the package recipes & instantiation, how dependencies could be
 resolved and implement a prototype targeting [Homebrew- OSX](http://brew.sh/)
 and [Nix packaging system](http://nixos.org) which runs on linux, darwin,
 cygwin etc.
@@ -178,7 +184,6 @@ listed or not listed on
 
 Why should you support this project/ which problems do get fixed compared to X?
 ===============================================================================
-
 * accelerating open source software development. It'll be easy for users & testers
   to try new software and versions. Thus the feedback loop will become faster.
   Often users don't know how to program, but they still want to help by testing.
@@ -198,7 +203,8 @@ Why should you support this project/ which problems do get fixed compared to X?
 
 * By reducing package management to its minimal set of required features
   (package recipes, solvers, workers compiling binaries) distributors and
-  developers will have least chance to get distracted.
+  developers will have least chance to get distracted (such as flamewars
+  or policy discussions).
 
 CONTACT
 =======
